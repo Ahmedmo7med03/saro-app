@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تطبيقي الخاص 🌸</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --accent: #d81b60;
+            --purple: #8e44ad;
+            --glass: rgba(255, 255, 255, 0.95);
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            margin: 0; padding: 0;
+            background: linear-gradient(-45deg, #ff9a9e, #fad0c4, #ffd1ff, #a1c4fd);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            min-height: 100vh;
+            display: flex; justify-content: center;
+            overflow: hidden; /* منع سكرول الصفحة الأم لتركيز السكرول داخل الصناديق */
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* شاشة القفل */
+        #login-screen {
+            align-self: center; text-align: center;
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            padding: 40px 25px; border-radius: 30px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            width: 85%; max-width: 350px;
+            border: 2px solid white;
+        }
+
+        input {
+            width: 80%; padding: 15px; border-radius: 50px; border: 2px solid #eee;
+            margin: 20px 0; text-align: center; font-size: 1.2rem; outline: none;
+        }
+
+        button {
+            background: var(--accent); color: white; border: none;
+            padding: 12px 45px; border-radius: 50px; font-weight: bold; cursor: pointer;
+        }
+
+        /* الصفحة الرئيسية */
+        #main-content { display: none; width: 100%; max-width: 500px; padding: 15px; height: 100vh; flex-direction: column; }
+
+        .welcome-msg {
+            text-align: center; color: white; font-size: 1.4rem;
+            font-weight: bold; margin: 15px 0; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .nav-menu { 
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; 
+            margin-bottom: 15px;
+        }
+        
+        .nav-item {
+            background: white; padding: 12px 5px; border-radius: 18px;
+            text-align: center; cursor: pointer; box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            font-weight: bold; color: var(--purple);
+        }
+
+        /* تعديل "سكرول" خانة الآيات والمحتوى */
+        .content-section {
+            display: none; 
+            background: white; 
+            border-radius: 25px;
+            padding: 20px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            /* هنا السكرول المحسن */
+            flex-grow: 1; 
+            height: 65vh; 
+            overflow-y: scroll; /* إجبار ظهور السكرول عند الحاجة */
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        /* تخصيص شكل السكرول بار ليظهر بوضوح */
+        .content-section::-webkit-scrollbar { width: 8px; }
+        .content-section::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 10px; }
+        .content-section::-webkit-scrollbar-thumb { background: var(--purple); border-radius: 10px; }
+
+        .active { display: flex; flex-direction: column; animation: slideIn 0.5s ease; }
+
+        @keyframes slideIn { from {opacity: 0; transform: translateY(20px);} to {opacity: 1; transform: translateY(0);} }
+
+        .title-box { background: #fff0f3; padding: 10px; border-radius: 12px; margin: 15px 0 10px 0; color: var(--purple); font-weight: bold; text-align: center; border-right: 5px solid var(--purple); position: sticky; top: -20px; z-index: 10; }
+        .text-body { font-size: 1.25rem; line-height: 2.3; color: #2c3e50; text-align: justify; direction: rtl; }
+        .center { text-align: center; display: block; }
+    </style>
+</head>
+<body>
+
+    <div id="login-screen">
+        <h2 style="color: var(--accent);">🌸 أهلاً بكِ 🌸</h2>
+        <input type="password" id="passInput" placeholder="2092006">
+        <button onclick="checkPass()">دخول ✨</button>
+    </div>
+
+    <div id="main-content">
+        <div class="welcome-msg">أهلاً بأجمل إنسانة ✨</div>
+        <div class="nav-menu">
+            <div class="nav-item" onclick="showSection('quran')">📖<br>القرآن</div>
+            <div class="nav-item" onclick="showSection('azkar')">✨<br>الأذكار</div>
+            <div class="nav-item" onclick="showSection('dua')">🤲<br>الأدعية</div>
+        </div>
+
+        <div id="quran" class="content-section">
+            <div class="title-box">آية الكرسي</div>
+            <div class="text-body center">اللَّهُ لَا إِلَهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ لَا تَأْخُذُهُ سِنَةٌ وَلَا نَوْمٌ لَهُ مَا فِي السَّمَاوَاتِ وَمَا فِي الْأَرْضِ مَنْ ذَا الَّذِي يَشْفَعُ عِنْدَهُ إِلَّا بِإِذْنِهِ يَعْلَمُ مَا بَيْنَ أَيْدِيهِمْ وَمَا خَلْفَهُمْ وَلَا يُحِيطُونَ بِشَيْءٍ مِنْ عِلْمِهِ إِلَّا بِمَا شَاءَ وَسِعَ كُرْسِيُّهُ السَّمَاوَاتِ وَالْأَرْضَ وَلَا يَئُودُهُ حِفْظُهُمَا وَهُوَ الْعَلِيُّ الْعَظِيمُ.</div>
+            
+            <div class="title-box">سورة الإخلاص</div>
+            <div class="text-body center">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ<br>قُلْ هُوَ اللَّهُ أَحَدٌ (1) اللَّهُ الصَّمَدُ (2) لَمْ يَلِدْ وَلَمْ يُولَدْ (3) وَلَمْ يَكُن لَّهُ كُفُوًا أَحَدٌ (4)</div>
+            
+            <div class="title-box">سورة الناس</div>
+            <div class="text-body center">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ<br>قُلْ أَعُوذُ بِرَبِّ النَّاسِ (1) مَلِكِ النَّاسِ (2) إِلَهِ النَّاسِ (3) مِن شَرِّ الْوَسْوَاسِ الْخَنَّاسِ (4) الَّذِي يُوَسْوِسُ فِي صُدُورِ النَّاسِ (5) مِنَ الْجِنَّةِ وَالنَّاسِ (6)</div>
+            
+            <div class="title-box">سورة الكهف (50 آية)</div>
+            <div class="text-body">
+                بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ. الْحَمْدُ لِلَّهِ الَّذِي أَنْزَلَ عَلَى عَبْدِهِ الْكِتَابَ وَلَمْ يَجْعَلْ لَهُ عِوجًا (1) قَيِّمًا لِيُنْذِرَ بَأْسًا شَدِيدًا مِنْ لَدُنْهُ وَيُبَشِّرَ الْمُؤْمِنِينَ الَّذِينَ يَعْمَلُونَ الصَّالِحَاتِ أَنَّ لَهُمْ أَجْرًا حَسَنًا (2) مَاكِثِينَ فِيهِ أَبَدًا (3) وَيُنْذِرَ الَّذِينَ قَالُوا اتَّخَذَ اللَّهُ وَلَدًا (4) مَا لَهُمْ بِهِ مِنْ عِلْمٍ وَلَا لِآبَائِهِمْ كَبُرَتْ كَلِمَةً تَخْرُجُ مِنْ أَفْوَاهِهِمْ إِنْ يَقُولُونَ إِلَّا كَذِبًا (5) فَلَعَلَّكَ بَاخِعٌ نَفْسَكَ عَلَى آثَارِهِمْ إِنْ لَمْ يُؤْمِنُوا بِهَذَا الْحَدِيثِ أَسَفًا (6) إِنَّا جَعَلْنَا مَا عَلَى الْأَرْضِ زِينَةً لَهَا لِنَبْلُوَهُمْ أَيُّهُمْ أَحْسَنُ عَمَلًا (7) وَإِنَّا لَجَاعِلُونَ مَا عَلَيْهَا صَعِيدًا جُرُزًا (8) أَمْ حَسِبْتَ أَنَّ أَصْحَابَ الْكَهْفِ وَالرَّقِيمِ كَانُوا مِنْ آيَاتِنَا عَجَبًا (9) إِذْ أَوَى الْفِتْيَةُ إِلَى الْكَهْفِ فَقَالُوا رَبَّنَا آتِنَا مِنْ لَدُنْكَ رَحْمَةً وَهَيِّئْ لَنَا مِنْ أَمْرِنَا رَشَدًا (10) فَضَرَبْنَا عَلَى آذَانِهِمْ فِي الْكَهْفِ سِنِينَ عَدَدًا (11) ثُمَّ بَعَثْنَاهُمْ لِنَعْلَمَ أَيُّ الْحِزْبَيْنِ أَحْصَى لِمَا لَبِثُوا أَمَدًا (12) نَحْنُ نَقُصُّ عَلَيْكَ نَبَأَهُمْ بِالْحَقِّ إِنَّهُمْ فِتْيَةٌ آمَنُوا بِرَبِّهِمْ وَزِدْنَاهُمْ هُدًى (13) وَرَبطْنَا عَلَى قُلُوبِهِمْ إِذْ قَامُوا فَقَالُوا رَبُّنَا رَبُّ السَّمَاوَاتِ وَالْأَرْضِ لَنْ نَدْعُوَ مِنْ دُونِهِ إِلَهًا لَقَدْ قُلْنَا إِذًا شططًا (14) هَؤُلَاءِ قَوْمُنَا اتَّخَذُوا مِنْ دُونِهِ آلِهَةً لَوْلَا يَأْتُونَ عَلَيْهِمْ بِسُلْطَانٍ بَيِّنٍ فَمَنْ أَظْلَمُ مِمَّنِ افْتَرَى عَلَى اللَّهِ كَذِبًا (15)
+            </div>
+        </div>
+
+        <div id="azkar" class="content-section">
+            <div class="title-box">أذكار الصباح</div>
+            <div class="text-body">- أصبحنا وأصبح الملك لله.<br>- رضيت بالله رباً.<br>- سبحان الله وبحمده (100 مرة).</div>
+            <div class="title-box">أذكار المساء</div>
+            <div class="text-body">- أمسينا وأمسى الملك لله.<br>- أعوذ بكلمات الله التامات.<br>- اللهم صل وسلم على نبينا محمد.</div>
+        </div>
+
+        <div id="dua" class="content-section">
+            <div class="title-box">أدعية</div>
+            <div class="text-body">- اللهم إني أسألك الهدى والتقى.<br>- يا مقلب القلوب ثبت قلبي.<br>- اللهم اجبر خاطري وارحم قلبي.</div>
+        </div>
+    </div>
+
+    <script>
+        function checkPass() {
+            if(document.getElementById('passInput').value === "2092006") {
+                document.getElementById('login-screen').style.display = 'none';
+                document.getElementById('main-content').style.display = 'flex';
+            } else { alert("الباسورد غلط يا جميلة 🌸"); }
+        }
+        function showSection(id) {
+            document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
+            const target = document.getElementById(id);
+            target.classList.add('active');
+            target.scrollTop = 0;
+        }
+    </script>
+</body>
+</html>
